@@ -3,10 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
-      "~/*": [
-        "*"
-      ]
+      "~/*": ["*"]
     }
   },
   "include": [
