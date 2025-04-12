@@ -2,9 +2,10 @@ import { ID } from "react-native-appwrite";
 import { createContext, useContext, useEffect, useState } from "react";
 import { account } from "../lib/appwrite/client";
 import { toast } from "../lib/toast";
+import { User } from "../lib/appwrite/types";
 
 interface UserContextType {
-  current: any | null;
+  current: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
@@ -46,7 +47,6 @@ export function UserProvider(props: { children: React.ReactNode }) {
     try {
       const loggedIn = await account.get();
       setUser(loggedIn);
-      toast("Welcome back. You are logged in");
     } catch (err) {
       setUser(null);
     }

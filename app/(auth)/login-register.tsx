@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Alert, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View } from "react-native";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Text } from "~/components/ui/text";
 import { Input } from "~/components/ui/input";
@@ -14,6 +14,9 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 
+import { useUser } from "~/contexts/UserContext";
+import { router } from "expo-router";
+
 export default function LoginRegisterScreen() {
   const [activeTab, setActiveTab] = useState("login");
   const [loginEmail, setLoginEmail] = useState("");
@@ -22,32 +25,22 @@ export default function LoginRegisterScreen() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
 
-  const handleLogin = () => {
-    console.log("Login attempt:", {
-      email: loginEmail,
-      password: loginPassword,
-    });
-    Alert.alert(
-      "Login Action",
-      `Email: ${loginEmail}, Password: ${loginPassword}`
-    );
+  const { login, register, current: user } = useUser();
+
+  // useEffect(() => {
+  //   if (user) {
+  //     router.replace("/(chat)/chat");
+  //   }
+  // }, [user]);
+
+  const handleLogin = async () => {
+    await login(loginEmail, loginPassword);
     setLoginEmail("");
     setLoginPassword("");
   };
 
-  const handleRegister = () => {
-    if (registerPassword !== registerConfirmPassword) {
-      Alert.alert("Registration Error", "Passwords do not match!");
-      return;
-    }
-    console.log("Register attempt:", {
-      email: registerEmail,
-      password: registerPassword,
-    });
-    Alert.alert(
-      "Register Action",
-      `Email: ${registerEmail}, Password: ${registerPassword}`
-    );
+  const handleRegister = async () => {
+    await register(registerEmail, registerPassword);
     setRegisterEmail("");
     setRegisterPassword("");
     setRegisterConfirmPassword("");
